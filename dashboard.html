@@ -26,6 +26,7 @@
       padding: 2rem;
     }
     
+    /* Mobile Responsive Navigation */
     .dashboard-nav {
       display: flex;
       justify-content: space-between;
@@ -35,6 +36,7 @@
       background: white;
       border-radius: 60px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      position: relative;
     }
     
     .nav-logo {
@@ -58,6 +60,7 @@
       color: #475569;
       font-weight: 500;
       transition: color 0.2s;
+      white-space: nowrap;
     }
     
     .nav-links a:hover {
@@ -71,6 +74,7 @@
       padding: 0.5rem 1rem;
       background: #f1f5f9;
       border-radius: 50px;
+      white-space: nowrap;
     }
     
     .user-badge i {
@@ -86,12 +90,43 @@
       cursor: pointer;
       font-weight: 600;
       transition: background 0.2s;
+      white-space: nowrap;
     }
     
     .logout-btn:hover {
       background: #dc2626;
     }
     
+    /* Hamburger Menu Button */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #1e5bbf;
+      padding: 0.5rem;
+      transition: color 0.2s;
+    }
+    
+    .hamburger:hover {
+      color: #0a4275;
+    }
+    
+    /* Mobile Menu Close Button */
+    .mobile-menu-close {
+      display: none;
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+    
+    /* Welcome Card */
     .welcome-card {
       background: linear-gradient(135deg, #1e5bbf, #3b82f6);
       color: white;
@@ -106,6 +141,7 @@
       margin-bottom: 0.5rem;
     }
     
+    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -132,11 +168,14 @@
       color: #1e5bbf;
     }
     
+    /* Section Headers */
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 2rem 0 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     
     .section-header h3 {
@@ -144,6 +183,7 @@
       color: #1e293b;
     }
     
+    /* Action Grid */
     .action-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -185,6 +225,7 @@
       margin-bottom: 1rem;
     }
     
+    /* Work Section */
     .work-section {
       background: white;
       border-radius: 24px;
@@ -202,6 +243,8 @@
       border-radius: 16px;
       margin-bottom: 1rem;
       transition: all 0.2s;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     
     .work-item:hover {
@@ -211,6 +254,7 @@
     
     .work-info {
       flex: 1;
+      min-width: 200px;
     }
     
     .work-title {
@@ -224,6 +268,7 @@
       gap: 1rem;
       color: #64748b;
       font-size: 0.9rem;
+      flex-wrap: wrap;
     }
     
     .work-badge {
@@ -256,6 +301,7 @@
       color: #1e5bbf;
     }
     
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -397,6 +443,8 @@
       justify-content: space-between;
       align-items: start;
       margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     
     .job-title {
@@ -419,6 +467,8 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     
     .bid-badge {
@@ -428,16 +478,237 @@
       border-radius: 50px;
       font-size: 0.85rem;
     }
+
+    /* Mobile Responsive Styles */
+    @media screen and (max-width: 1024px) {
+      .dashboard-container {
+        padding: 1rem;
+      }
+      
+      .dashboard-nav {
+        padding: 1rem 1.5rem;
+      }
+      
+      .nav-links {
+        gap: 1.5rem;
+      }
+      
+      .nav-links a span,
+      .nav-links a i + br + span {
+        display: inline;
+      }
+    }
+
+    @media screen and (max-width: 900px) {
+      .hamburger {
+        display: block;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5rem 1.5rem 2rem;
+        gap: 1.5rem;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+        overflow-y: auto;
+      }
+      
+      .nav-links.active {
+        right: 0;
+      }
+      
+      .mobile-menu-close {
+        display: block;
+      }
+      
+      .nav-links a {
+        width: 100%;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      
+      .nav-links a:last-of-type {
+        border-bottom: none;
+      }
+      
+      .user-badge {
+        width: 100%;
+        justify-content: center;
+        margin: 0.5rem 0;
+      }
+      
+      .logout-btn {
+        width: 100%;
+        text-align: center;
+        margin-top: auto;
+      }
+      
+      /* Overlay when menu is open */
+      .nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 998;
+      }
+      
+      .nav-overlay.active {
+        display: block;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .dashboard-container {
+        padding: 0.75rem;
+      }
+      
+      .dashboard-nav {
+        padding: 0.75rem 1.25rem;
+        border-radius: 40px;
+      }
+      
+      .nav-logo {
+        font-size: 1.5rem;
+      }
+      
+      .welcome-card {
+        padding: 1.5rem;
+      }
+      
+      .welcome-card h2 {
+        font-size: 1.5rem;
+      }
+      
+      .welcome-card p {
+        font-size: 0.9rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .stat-card {
+        padding: 1rem;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
+      }
+      
+      .action-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .work-section {
+        padding: 1.5rem;
+      }
+      
+      .work-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .work-actions {
+        align-self: flex-end;
+      }
+      
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .section-header .btn-primary {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .dashboard-nav {
+        padding: 0.5rem 1rem;
+      }
+      
+      .nav-logo {
+        font-size: 1.3rem;
+      }
+      
+      .nav-logo i {
+        font-size: 1.2rem;
+      }
+      
+      .hamburger {
+        font-size: 1.5rem;
+      }
+      
+      .nav-links {
+        width: 260px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .welcome-card h2 {
+        font-size: 1.3rem;
+      }
+      
+      .action-card {
+        padding: 1.5rem;
+      }
+      
+      .action-icon {
+        font-size: 2rem;
+      }
+      
+      .job-header {
+        flex-direction: column;
+      }
+      
+      .job-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .modal-content {
+        padding: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Mobile Menu Overlay -->
+  <div class="nav-overlay" id="navOverlay"></div>
+
   <div class="dashboard-container">
     <!-- Navigation -->
     <nav class="dashboard-nav">
       <a href="index.html" class="nav-logo">
         <i class="fas fa-bridge"></i> SkillBridge
       </a>
-      <div class="nav-links">
+      
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <div class="nav-links" id="navLinks">
+        <!-- Close button for mobile -->
+        <button class="mobile-menu-close" id="mobileMenuClose">
+          <i class="fas fa-times"></i>
+        </button>
+        
         <a href="jobs.html"><i class="fas fa-briefcase"></i> Browse Jobs</a>
         <a href="messages.html"><i class="fas fa-comments"></i> Messages</a>
         <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
@@ -503,6 +774,52 @@
     </div>
   </div>
 
+  <!-- Mobile Menu JavaScript -->
+  <script>
+    (function() {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const navLinks = document.getElementById('navLinks');
+      const navOverlay = document.getElementById('navOverlay');
+      const mobileMenuClose = document.getElementById('mobileMenuClose');
+      
+      function openMenu() {
+        navLinks.classList.add('active');
+        navOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeMenu() {
+        navLinks.classList.remove('active');
+        navOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openMenu);
+      }
+      
+      if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', closeMenu);
+      }
+      
+      if (navOverlay) {
+        navOverlay.addEventListener('click', closeMenu);
+      }
+      
+      // Close menu when a nav link is clicked
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+      });
+      
+      // Close menu on window resize if screen becomes larger
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 900) {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
+
   <script type="module">
     import { auth, db } from './js/firebase-config.js';
     import { 
@@ -527,7 +844,7 @@
     const dashboardDiv = document.getElementById('dashboardContent');
     let currentUser = null;
     let currentUserData = null;
-    let userRole = 'freelancer'; // Default role
+    let userRole = 'freelancer';
     let userWorks = [];
 
     // Check authentication state
@@ -536,7 +853,6 @@
         currentUser = user;
         console.log("User authenticated:", user.uid);
         
-        // Update UI with user info
         document.getElementById('userName').textContent = user.displayName || user.email?.split('@')[0] || 'User';
         
         await loadDashboard(user.uid);
@@ -548,16 +864,14 @@
 
     async function loadDashboard(userId) {
       try {
-        // Get user data from Firestore
         const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
         
         if (!userSnap.exists()) {
-          // Create basic user profile if it doesn't exist
           const userData = {
             name: currentUser.displayName || currentUser.email?.split('@')[0] || 'User',
             email: currentUser.email,
-            role: 'freelancer', // Default role
+            role: 'freelancer',
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
           };
@@ -573,14 +887,11 @@
         localStorage.setItem('userRole', userRole);
         localStorage.setItem('userId', userId);
         
-        // Update user badge with role
         document.getElementById('userName').textContent = 
           `${currentUserData.name || 'User'} (${userRole})`;
         
-        // Load user's works
         await loadUserWorks(userId);
         
-        // Get stats
         let jobsCount = 0;
         let bidsCount = 0;
         let activeWorksCount = userWorks.filter(w => w.status === 'active').length;
@@ -589,7 +900,6 @@
         
         try {
           if (userRole === 'client') {
-            // Get client's posted jobs
             const jobsQuery = query(
               collection(db, "jobs"), 
               where("clientId", "==", userId),
@@ -605,7 +915,6 @@
               });
             });
             
-            // Get bids on client's jobs
             for (const job of myJobs) {
               const bidsQuery = query(
                 collection(db, "bids"),
@@ -615,7 +924,6 @@
               job.bidCount = bidsSnapshot.size;
             }
           } else {
-            // Get freelancer's bids
             const bidsQuery = query(
               collection(db, "bids"), 
               where("freelancerId", "==", userId),
@@ -635,7 +943,6 @@
           console.log("Query error:", e);
         }
 
-        // Render dashboard
         renderDashboard(jobsCount, bidsCount, activeWorksCount, myJobs, myBids);
         
       } catch (error) {
@@ -684,7 +991,6 @@
         renderFreelancerDashboard(userName, bidsCount, activeWorksCount, myBids);
       }
       
-      // Attach event listeners
       attachEventListeners();
     }
 
@@ -917,7 +1223,6 @@
     }
 
     function attachEventListeners() {
-      // Edit work buttons
       document.querySelectorAll('.edit-work-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const workId = e.target.closest('button').dataset.workId;
@@ -925,7 +1230,6 @@
         });
       });
       
-      // Delete work buttons
       document.querySelectorAll('.delete-work-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           if (confirm('Are you sure you want to delete this work entry?')) {
@@ -941,7 +1245,6 @@
       });
     }
 
-    // Global functions for modal (attached to window)
     window.openNewWorkModal = function() {
       document.getElementById('modalTitle').textContent = 'Add New Work';
       document.getElementById('workForm').reset();
@@ -967,7 +1270,6 @@
       document.getElementById('editWorkModal').classList.remove('active');
     };
 
-    // Handle work form submission
     document.getElementById('workForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -999,27 +1301,20 @@
       }
     });
 
-    // Close modal when clicking outside
     document.getElementById('editWorkModal').addEventListener('click', (e) => {
       if (e.target === document.getElementById('editWorkModal')) {
         window.closeModal();
       }
     });
 
-    // LOGOUT FUNCTIONALITY
     document.getElementById('logoutBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       
       if (confirm('Are you sure you want to log out?')) {
         try {
-          // Sign out from Firebase
           await signOut(auth);
-          
-          // Clear all local storage
           localStorage.clear();
           sessionStorage.clear();
-          
-          // Redirect to home page
           window.location.href = 'index.html';
         } catch (error) {
           console.error("Logout error:", error);
