@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SkillBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Darker Grotesque', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+    
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .dashboard-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1rem 2rem;
+      background: white;
+      border-radius: 60px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .nav-logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-decoration: none;
+      background: linear-gradient(135deg, #0a4275, #2c7be5);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #475569;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-links a:hover {
+      color: #1e5bbf;
+    }
+    
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #f1f5f9;
+      border-radius: 50px;
+    }
+    
+    .user-badge i {
+      color: #1e5bbf;
+    }
+    
+    .logout-btn {
+      background: #ef4444;
+      color: white !important;
+      padding: 0.5rem 1.5rem !important;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    
+    .logout-btn:hover {
+      background: #dc2626;
+    }
+    
+    .welcome-card {
+      background: linear-gradient(135deg, #1e5bbf, #3b82f6);
+      color: white;
+      padding: 2rem 2.5rem;
+      border-radius: 32px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px -5px rgba(30, 91, 191, 0.3);
+    }
+    
+    .welcome-card h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-3px);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1e5bbf;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2rem 0 1rem;
+    }
+    
+    .section-header h3 {
+      font-size: 1.5rem;
+      color: #1e293b;
+    }
+    
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .action-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid #e2e8f0;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .action-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+      border-color: #1e5bbf;
+    }
+    
+    .action-icon {
+      font-size: 2.5rem;
+      color: #1e5bbf;
+      margin-bottom: 1rem;
+    }
+    
+    .action-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .action-card p {
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+    
+    .work-section {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      margin-top: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .work-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .work-item:hover {
+      border-color: #1e5bbf;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .work-info {
+      flex: 1;
+    }
+    
+    .work-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .work-meta {
+      display: flex;
+      gap: 1rem;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    
+    .work-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .badge-remote { background: #dbeafe; color: #1e5bbf; }
+    .badge-hybrid { background: #fef3c7; color: #d97706; }
+    .badge-office { background: #d1fae5; color: #059669; }
+    
+    .work-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .btn-icon {
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: #64748b;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+    
+    .btn-icon:hover {
+      color: #1e5bbf;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 32px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #1e5bbf;
+    }
+    
+    .btn-primary {
+      background: #1e5bbf;
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .btn-primary:hover {
+      background: #1e4a9e;
+    }
+    
+    .btn-secondary {
+      background: white;
+      color: #1e5bbf;
+      border: 2px solid #1e5bbf;
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-secondary:hover {
+      background: #1e5bbf;
+      color: white;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.2rem;
+      color: #1e5bbf;
+    }
+    
+    .error-message {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 1rem;
+      border-radius: 16px;
+      margin: 1rem 0;
+    }
+    
+    .jobs-list {
+      margin-top: 1rem;
+    }
+    
+    .job-card-item {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border: 2px solid #e2e8f0;
+      transition: all 0.2s;
+    }
+    
+    .job-card-item:hover {
+      border-color: #1e5bbf;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 0.5rem;
+    }
+    
+    .job-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    
+    .job-budget {
+      font-weight: 700;
+      color: #1e5bbf;
+    }
+    
+    .job-description {
+      color: #475569;
+      margin: 0.5rem 0;
+    }
+    
+    .job-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+    
+    .bid-badge {
+      background: #dbeafe;
+      color: #1e5bbf;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-bridge"></i> SkillBridge
+      </a>
+      <div class="nav-links">
+        <a href="jobs.html"><i class="fas fa-briefcase"></i> Browse Jobs</a>
+        <a href="messages.html"><i class="fas fa-comments"></i> Messages</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        <span class="user-badge" id="userBadge">
+          <i class="fas fa-user-circle"></i>
+          <span id="userName">Loading...</span>
+        </span>
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div id="dashboardContent">
+      <div class="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading your dashboard...
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Work Modal -->
+  <div id="editWorkModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Edit Work Details</h3>
+        <button class="modal-close" onclick="window.closeModal()">&times;</button>
+      </div>
+      <form id="workForm">
+        <input type="hidden" id="workId">
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" id="workTitle" required placeholder="e.g., Senior React Developer">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="workDescription" rows="4" required placeholder="Describe the work..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Pay Rate/Amount ($)</label>
+          <input type="number" id="workPay" required placeholder="5000">
+        </div>
+        <div class="form-group">
+          <label>Work Type</label>
+          <select id="workType" required>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="In-Office">In-Office</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="workStatus">
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="paused">Paused</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%;">
+          <i class="fas fa-save"></i> Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './js/firebase-config.js';
+    import { 
+      signOut, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { 
+      doc, 
+      getDoc, 
+      setDoc,
+      updateDoc,
+      collection, 
+      query, 
+      where, 
+      getDocs,
+      serverTimestamp,
+      deleteDoc,
+      addDoc,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+    const dashboardDiv = document.getElementById('dashboardContent');
+    let currentUser = null;
+    let currentUserData = null;
+    let userRole = 'freelancer'; // Default role
+    let userWorks = [];
+
+    // Check authentication state
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        console.log("User authenticated:", user.uid);
+        
+        // Update UI with user info
+        document.getElementById('userName').textContent = user.displayName || user.email?.split('@')[0] || 'User';
+        
+        await loadDashboard(user.uid);
+      } else {
+        console.log("No user, redirecting to login");
+        window.location.href = 'login.html';
+      }
+    });
+
+    async function loadDashboard(userId) {
+      try {
+        // Get user data from Firestore
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        
+        if (!userSnap.exists()) {
+          // Create basic user profile if it doesn't exist
+          const userData = {
+            name: currentUser.displayName || currentUser.email?.split('@')[0] || 'User',
+            email: currentUser.email,
+            role: 'freelancer', // Default role
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+          
+          await setDoc(userRef, userData);
+          currentUserData = userData;
+          userRole = 'freelancer';
+        } else {
+          currentUserData = userSnap.data();
+          userRole = currentUserData.role || 'freelancer';
+        }
+        
+        localStorage.setItem('userRole', userRole);
+        localStorage.setItem('userId', userId);
+        
+        // Update user badge with role
+        document.getElementById('userName').textContent = 
+          `${currentUserData.name || 'User'} (${userRole})`;
+        
+        // Load user's works
+        await loadUserWorks(userId);
+        
+        // Get stats
+        let jobsCount = 0;
+        let bidsCount = 0;
+        let activeWorksCount = userWorks.filter(w => w.status === 'active').length;
+        let myJobs = [];
+        let myBids = [];
+        
+        try {
+          if (userRole === 'client') {
+            // Get client's posted jobs
+            const jobsQuery = query(
+              collection(db, "jobs"), 
+              where("clientId", "==", userId),
+              orderBy("createdAt", "desc")
+            );
+            const jobsSnapshot = await getDocs(jobsQuery);
+            jobsCount = jobsSnapshot.size;
+            
+            jobsSnapshot.forEach(doc => {
+              myJobs.push({
+                id: doc.id,
+                ...doc.data()
+              });
+            });
+            
+            // Get bids on client's jobs
+            for (const job of myJobs) {
+              const bidsQuery = query(
+                collection(db, "bids"),
+                where("jobId", "==", job.id)
+              );
+              const bidsSnapshot = await getDocs(bidsQuery);
+              job.bidCount = bidsSnapshot.size;
+            }
+          } else {
+            // Get freelancer's bids
+            const bidsQuery = query(
+              collection(db, "bids"), 
+              where("freelancerId", "==", userId),
+              orderBy("createdAt", "desc")
+            );
+            const bidsSnapshot = await getDocs(bidsQuery);
+            bidsCount = bidsSnapshot.size;
+            
+            bidsSnapshot.forEach(doc => {
+              myBids.push({
+                id: doc.id,
+                ...doc.data()
+              });
+            });
+          }
+        } catch (e) {
+          console.log("Query error:", e);
+        }
+
+        // Render dashboard
+        renderDashboard(jobsCount, bidsCount, activeWorksCount, myJobs, myBids);
+        
+      } catch (error) {
+        console.error("Error loading dashboard:", error);
+        dashboardDiv.innerHTML = `
+          <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i> 
+            Error loading dashboard: ${error.message}
+          </div>
+          <div class="action-card" onclick="window.location.href='profile.html'">
+            <div class="action-icon"><i class="fas fa-cog"></i></div>
+            <h4>Complete Setup</h4>
+            <p>Please ensure your profile is complete</p>
+          </div>
+        `;
+      }
+    }
+
+    async function loadUserWorks(userId) {
+      try {
+        const worksRef = collection(db, "works");
+        const fieldName = userRole === 'client' ? 'clientId' : 'freelancerId';
+        const q = query(worksRef, where(fieldName, "==", userId), orderBy("updatedAt", "desc"));
+        const snapshot = await getDocs(q);
+        
+        userWorks = [];
+        snapshot.forEach(doc => {
+          userWorks.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        
+      } catch (error) {
+        console.error("Error loading works:", error);
+        userWorks = [];
+      }
+    }
+
+    function renderDashboard(jobsCount, bidsCount, activeWorksCount, myJobs, myBids) {
+      const userName = currentUserData.name || 'User';
+      
+      if (userRole === 'client') {
+        renderClientDashboard(userName, jobsCount, activeWorksCount, myJobs);
+      } else {
+        renderFreelancerDashboard(userName, bidsCount, activeWorksCount, myBids);
+      }
+      
+      // Attach event listeners
+      attachEventListeners();
+    }
+
+    function renderClientDashboard(userName, jobsCount, activeWorksCount, myJobs) {
+      let jobsHtml = '';
+      
+      if (myJobs.length > 0) {
+        jobsHtml = `
+          <div class="section-header">
+            <h3><i class="fas fa-clipboard-list"></i> Your Posted Jobs</h3>
+            <a href="post-job.html" class="btn-primary">
+              <i class="fas fa-plus"></i> Post New Job
+            </a>
+          </div>
+          <div class="jobs-list">
+            ${myJobs.slice(0, 5).map(job => `
+              <div class="job-card-item">
+                <div class="job-header">
+                  <span class="job-title">${job.title || 'Untitled'}</span>
+                  <span class="job-budget">$${job.budget || 0}</span>
+                </div>
+                <p class="job-description">${(job.description || '').substring(0, 150)}...</p>
+                <div class="job-footer">
+                  <span class="bid-badge">
+                    <i class="fas fa-gavel"></i> ${job.bidCount || 0} bids
+                  </span>
+                  <span class="bid-badge" style="background: ${job.status === 'open' ? '#d1fae5' : '#fee2e2'}; color: ${job.status === 'open' ? '#059669' : '#991b1b'};">
+                    ${job.status || 'open'}
+                  </span>
+                  <a href="job-details.html?id=${job.id}" class="btn-secondary" style="padding: 0.25rem 1rem;">
+                    View <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          ${myJobs.length > 5 ? `<a href="my-jobs.html" style="display: block; text-align: center; margin-top: 1rem;">View all ${myJobs.length} jobs →</a>` : ''}
+        `;
+      }
+      
+      dashboardDiv.innerHTML = `
+        <div class="welcome-card">
+          <h2>Welcome back, ${userName}! 👋</h2>
+          <p>Manage your projects and find top talent for your work</p>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">${jobsCount}</div>
+            <div>Jobs Posted</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${activeWorksCount}</div>
+            <div>Active Projects</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${userWorks.filter(w => w.status === 'completed').length}</div>
+            <div>Completed</div>
+          </div>
+        </div>
+        
+        <div class="action-grid">
+          <a href="post-job.html" class="action-card">
+            <div class="action-icon"><i class="fas fa-plus-circle"></i></div>
+            <h4>Post a Job</h4>
+            <p>Create a new job posting and get bids</p>
+            <button class="btn-secondary">Post Now →</button>
+          </a>
+          
+          <a href="my-jobs.html" class="action-card">
+            <div class="action-icon"><i class="fas fa-clipboard-list"></i></div>
+            <h4>My Jobs</h4>
+            <p>View and manage your posted jobs</p>
+            <button class="btn-secondary">View Jobs →</button>
+          </a>
+          
+          <a href="jobs.html" class="action-card">
+            <div class="action-icon"><i class="fas fa-users"></i></div>
+            <h4>Find Talent</h4>
+            <p>Browse freelancers for your projects</p>
+            <button class="btn-secondary">Browse →</button>
+          </a>
+        </div>
+        
+        ${jobsHtml}
+        
+        ${renderWorksSection()}
+      `;
+    }
+
+    function renderFreelancerDashboard(userName, bidsCount, activeWorksCount, myBids) {
+      let bidsHtml = '';
+      
+      if (myBids.length > 0) {
+        bidsHtml = `
+          <div class="section-header">
+            <h3><i class="fas fa-gavel"></i> Your Recent Bids</h3>
+            <a href="jobs.html" class="btn-primary">
+              <i class="fas fa-search"></i> Find More Jobs
+            </a>
+          </div>
+          <div class="jobs-list">
+            ${myBids.slice(0, 5).map(bid => `
+              <div class="job-card-item">
+                <div class="job-header">
+                  <span class="job-title">Bid: $${bid.amount || 0}</span>
+                  <span class="job-budget">${bid.status || 'pending'}</span>
+                </div>
+                <p class="job-description">${(bid.coverLetter || 'No cover letter').substring(0, 150)}...</p>
+                <div class="job-footer">
+                  <span class="bid-badge">
+                    <i class="fas fa-calendar"></i> ${bid.createdAt?.toDate?.().toLocaleDateString() || 'Recently'}
+                  </span>
+                  <a href="job-details.html?id=${bid.jobId}" class="btn-secondary" style="padding: 0.25rem 1rem;">
+                    View Job <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+      
+      dashboardDiv.innerHTML = `
+        <div class="welcome-card">
+          <h2>Welcome back, ${userName}! 🚀</h2>
+          <p>Track your work, update project details, and grow your career</p>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">${bidsCount}</div>
+            <div>Bids Submitted</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${activeWorksCount}</div>
+            <div>Active Works</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${userWorks.filter(w => w.status === 'completed').length}</div>
+            <div>Completed</div>
+          </div>
+        </div>
+        
+        <div class="action-grid">
+          <a href="jobs.html" class="action-card">
+            <div class="action-icon"><i class="fas fa-search"></i></div>
+            <h4>Find Work</h4>
+            <p>Browse available jobs matching your skills</p>
+            <button class="btn-secondary">Browse Jobs →</button>
+          </a>
+          
+          <a href="profile.html" class="action-card">
+            <div class="action-icon"><i class="fas fa-user-edit"></i></div>
+            <h4>Update Profile</h4>
+            <p>Keep your skills and portfolio current</p>
+            <button class="btn-secondary">Edit Profile →</button>
+          </a>
+          
+          <a href="my-bids.html" class="action-card">
+            <div class="action-icon"><i class="fas fa-chart-line"></i></div>
+            <h4>My Bids</h4>
+            <p>Track your submitted proposals</p>
+            <button class="btn-secondary">View Bids →</button>
+          </a>
+        </div>
+        
+        ${bidsHtml}
+        
+        ${renderWorksSection()}
+      `;
+    }
+
+    function renderWorksSection() {
+      if (userWorks.length === 0) {
+        return `
+          <div class="work-section">
+            <div class="section-header">
+              <h3><i class="fas fa-briefcase"></i> ${userRole === 'client' ? 'Active Projects' : 'My Work'}</h3>
+              <button class="btn-primary" onclick="window.openNewWorkModal()">
+                <i class="fas fa-plus"></i> Add Work
+              </button>
+            </div>
+            <p style="text-align: center; color: #64748b; padding: 2rem;">
+              No work entries yet. Click "Add Work" to get started!
+            </p>
+          </div>
+        `;
+      }
+      
+      let worksHtml = `
+        <div class="work-section">
+          <div class="section-header">
+            <h3><i class="fas fa-briefcase"></i> ${userRole === 'client' ? 'Active Projects' : 'My Work'}</h3>
+            <button class="btn-primary" onclick="window.openNewWorkModal()">
+              <i class="fas fa-plus"></i> Add Work
+            </button>
+          </div>
+      `;
+      
+      userWorks.forEach(work => {
+        const workTypeClass = work.workType === 'Remote' ? 'badge-remote' : 
+                             work.workType === 'Hybrid' ? 'badge-hybrid' : 'badge-office';
+        
+        worksHtml += `
+          <div class="work-item">
+            <div class="work-info">
+              <div class="work-title">${work.title || 'Untitled Work'}</div>
+              <div class="work-meta">
+                <span><i class="fas fa-dollar-sign"></i> $${work.pay || 0}</span>
+                <span class="work-badge ${workTypeClass}">${work.workType || 'Remote'}</span>
+                <span><i class="fas fa-circle"></i> ${work.status || 'active'}</span>
+              </div>
+              <p style="margin-top: 0.5rem; color: #475569;">${work.description || 'No description'}</p>
+            </div>
+            <div class="work-actions">
+              <button class="btn-icon edit-work-btn" data-work-id="${work.id}" title="Edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-icon delete-work-btn" data-work-id="${work.id}" title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      
+      worksHtml += '</div>';
+      return worksHtml;
+    }
+
+    function attachEventListeners() {
+      // Edit work buttons
+      document.querySelectorAll('.edit-work-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const workId = e.target.closest('button').dataset.workId;
+          window.openEditModal(workId);
+        });
+      });
+      
+      // Delete work buttons
+      document.querySelectorAll('.delete-work-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          if (confirm('Are you sure you want to delete this work entry?')) {
+            const workId = e.target.closest('button').dataset.workId;
+            try {
+              await deleteDoc(doc(db, "works", workId));
+              location.reload();
+            } catch (error) {
+              alert('Error deleting work: ' + error.message);
+            }
+          }
+        });
+      });
+    }
+
+    // Global functions for modal (attached to window)
+    window.openNewWorkModal = function() {
+      document.getElementById('modalTitle').textContent = 'Add New Work';
+      document.getElementById('workForm').reset();
+      document.getElementById('workId').value = '';
+      document.getElementById('editWorkModal').classList.add('active');
+    };
+
+    window.openEditModal = function(workId) {
+      const work = userWorks.find(w => w.id === workId);
+      if (!work) return;
+      
+      document.getElementById('modalTitle').textContent = 'Edit Work Details';
+      document.getElementById('workId').value = workId;
+      document.getElementById('workTitle').value = work.title || '';
+      document.getElementById('workDescription').value = work.description || '';
+      document.getElementById('workPay').value = work.pay || '';
+      document.getElementById('workType').value = work.workType || 'Remote';
+      document.getElementById('workStatus').value = work.status || 'active';
+      document.getElementById('editWorkModal').classList.add('active');
+    };
+
+    window.closeModal = function() {
+      document.getElementById('editWorkModal').classList.remove('active');
+    };
+
+    // Handle work form submission
+    document.getElementById('workForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const workId = document.getElementById('workId').value;
+      const fieldName = userRole === 'client' ? 'clientId' : 'freelancerId';
+      
+      const workData = {
+        title: document.getElementById('workTitle').value,
+        description: document.getElementById('workDescription').value,
+        pay: parseFloat(document.getElementById('workPay').value),
+        workType: document.getElementById('workType').value,
+        status: document.getElementById('workStatus').value,
+        [fieldName]: currentUser.uid,
+        updatedAt: serverTimestamp()
+      };
+      
+      try {
+        if (workId) {
+          await updateDoc(doc(db, "works", workId), workData);
+        } else {
+          workData.createdAt = serverTimestamp();
+          await addDoc(collection(db, "works"), workData);
+        }
+        
+        window.closeModal();
+        location.reload();
+      } catch (error) {
+        alert('Error saving work: ' + error.message);
+      }
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('editWorkModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('editWorkModal')) {
+        window.closeModal();
+      }
+    });
+
+    // LOGOUT FUNCTIONALITY
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      if (confirm('Are you sure you want to log out?')) {
+        try {
+          // Sign out from Firebase
+          await signOut(auth);
+          
+          // Clear all local storage
+          localStorage.clear();
+          sessionStorage.clear();
+          
+          // Redirect to home page
+          window.location.href = 'index.html';
+        } catch (error) {
+          console.error("Logout error:", error);
+          alert('Error logging out. Please try again.');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

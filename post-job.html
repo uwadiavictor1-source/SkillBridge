@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post a Job - SkillBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar">
+      <a href="index.html" class="logo"><i class="fas fa-bridge"></i> SkillBridge</a>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="profile.html">Profile</a>
+      </div>
+    </nav>
+
+    <div class="form-container animate-fade">
+      <h2><i class="fas fa-plus-circle"></i> Post a New Job</h2>
+      <form id="postJobForm">
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" id="title" required placeholder="e.g., Need React Developer">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="description" rows="5" required placeholder="Describe the project details, requirements, and expectations..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Budget (USD)</label>
+          <input type="number" id="budget" required placeholder="500">
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="location" placeholder="Remote or City">
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%;"><i class="fas fa-paper-plane"></i> Publish Job</button>
+      </form>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 SkillBridge</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { db } from './js/firebase-config.js';
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    
+    const userId = localStorage.getItem('userId');
+    if (!userId) window.location.href = 'login.html';
+    
+    document.getElementById('postJobForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const jobData = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        budget: parseInt(document.getElementById('budget').value),
+        location: document.getElementById('location').value || 'Remote',
+        clientId: userId,
+        createdAt: serverTimestamp(),
+        status: 'open'
+      };
+      
+      try {
+        await addDoc(collection(db, "jobs"), jobData);
+        alert('Job posted successfully!');
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        alert('Error posting job: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

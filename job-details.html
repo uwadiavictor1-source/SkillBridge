@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Details - SkillBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar">
+      <a href="index.html" class="logo"><i class="fas fa-bridge"></i> SkillBridge</a>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="profile.html">Profile</a>
+      </div>
+    </nav>
+
+    <div id="jobDetails" class="animate-fade"></div>
+
+    <footer>
+      <p>&copy; 2025 SkillBridge</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { db } from './js/firebase-config.js';
+    import { doc, getDoc, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const jobId = urlParams.get('id');
+    const userId = localStorage.getItem('userId');
+    
+    const jobDetailsDiv = document.getElementById('jobDetails');
+    
+    async function loadJob() {
+      const jobRef = doc(db, "jobs", jobId);
+      const jobSnap = await getDoc(jobRef);
+      
+      if (!jobSnap.exists()) {
+        jobDetailsDiv.innerHTML = '<div class="card">Job not found</div>';
+        return;
+      }
+      
+      const job = jobSnap.data();
+      
+      // Check if user has already bid
+      let hasBid = false;
+      if (userId) {
+        const bidsQuery = query(collection(db, "bids"), where("jobId", "==", jobId), where("freelancerId", "==", userId));
+        const bidsSnap = await getDocs(bidsQuery);
+        hasBid = !bidsSnap.empty;
+      }
+      
+      jobDetailsDiv.innerHTML = `
+        <div class="card" style="margin-bottom: 2rem;">
+          <h2>${job.title}</h2>
+          <div class="job-meta">
+            <span class="badge"><i class="fas fa-dollar-sign"></i> $${job.budget}</span>
+            <span class="badge"><i class="fas fa-map-marker-alt"></i> ${job.location || 'Remote'}</span>
+          </div>
+          <h3>Description</h3>
+          <p style="margin: 1rem 0;">${job.description}</p>
+          ${job.status === 'closed' ? '<div class="alert" style="background:#fee2e2;">This job is closed</div>' : ''}
+        </div>
+      `;
+      
+      // Show bid form for freelancers
+      const userRole = localStorage.getItem('userRole');
+      if (userId && userRole === 'freelancer' && !hasBid && job.status !== 'closed') {
+        jobDetailsDiv.innerHTML += `
+          <div class="card">
+            <h3><i class="fas fa-gavel"></i> Submit Your Bid</h3>
+            <form id="bidForm">
+              <div class="form-group">
+                <label>Your Bid Amount (USD)</label>
+                <input type="number" id="bidAmount" required placeholder="e.g., ${job.budget}">
+              </div>
+              <div class="form-group">
+                <label>Cover Letter</label>
+                <textarea id="coverLetter" rows="4" placeholder="Why are you the best fit for this job?"></textarea>
+              </div>
+              <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Submit Bid</button>
+            </form>
+          </div>
+        `;
+        
+        document.getElementById('bidForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          await addDoc(collection(db, "bids"), {
+            jobId: jobId,
+            freelancerId: userId,
+            amount: parseInt(document.getElementById('bidAmount').value),
+            coverLetter: document.getElementById('coverLetter').value,
+            createdAt: new Date().toISOString()
+          });
+          alert('Bid submitted successfully!');
+          window.location.reload();
+        });
+      } else if (hasBid) {
+        jobDetailsDiv.innerHTML += '<div class="card"><i class="fas fa-check-circle"></i> You have already submitted a bid for this job.</div>';
+      }
+    }
+    
+    loadJob();
+  </script>
+</body>
+</html>

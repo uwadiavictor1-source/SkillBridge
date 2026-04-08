@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bids - SkillBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Darker Grotesque', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+      font-size: 2rem;
+      color: #1e293b;
+    }
+    
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #1e5bbf;
+    }
+    
+    .stat-label {
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+    
+    .filter-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+      padding: 0.5rem 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 50px;
+    }
+    
+    .filter-tab:hover {
+      background: #f1f5f9;
+      color: #1e5bbf;
+    }
+    
+    .filter-tab.active {
+      background: #1e5bbf;
+      color: white;
+    }
+    
+    .bids-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .bid-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .bid-card:hover {
+      border-color: #1e5bbf;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    
+    .bid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+    
+    .job-title-section {
+      flex: 1;
+    }
+    
+    .job-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.25rem;
+    }
+    
+    .job-client {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    
+    .bid-amount {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1e5bbf;
+    }
+    
+    .bid-status {
+      padding: 0.25rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    
+    .status-pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
+    
+    .status-accepted {
+      background: #d1fae5;
+      color: #059669;
+    }
+    
+    .status-rejected {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    
+    .status-withdrawn {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+    
+    .bid-details {
+      margin: 1rem 0;
+      padding: 1rem 0;
+      border-top: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .cover-letter {
+      color: #475569;
+      line-height: 1.6;
+    }
+    
+    .bid-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .bid-date {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    
+    .bid-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    
+    .btn-small {
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: none;
+    }
+    
+    .btn-outline {
+      background: white;
+      color: #1e5bbf;
+      border: 2px solid #1e5bbf;
+    }
+    
+    .btn-outline:hover {
+      background: #1e5bbf;
+      color: white;
+    }
+    
+    .btn-danger {
+      background: white;
+      color: #dc2626;
+      border: 2px solid #dc2626;
+    }
+    
+    .btn-danger:hover {
+      background: #dc2626;
+      color: white;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: white;
+      border-radius: 24px;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      color: #1e5bbf;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #1e293b;
+    }
+    
+    .empty-state p {
+      color: #64748b;
+      margin-bottom: 1.5rem;
+    }
+    
+    .loading-spinner {
+      text-align: center;
+      padding: 3rem;
+      color: #1e5bbf;
+    }
+    
+    .job-meta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .job-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: #f1f5f9;
+      color: #475569;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-family: inherit;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #1e5bbf;
+    }
+    
+    .btn-primary {
+      background: #1e5bbf;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Navigation -->
+    <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem 2rem; background: white; border-radius: 60px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+      <a href="index.html" class="logo" style="font-size: 1.8rem; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, #0a4275, #2c7be5); -webkit-background-clip: text; background-clip: text; color: transparent;">
+        <i class="fas fa-bridge"></i> SkillBridge
+      </a>
+      <div class="nav-links" style="display: flex; gap: 2rem; align-items: center;">
+        <a href="dashboard.html" style="text-decoration: none; color: #475569;"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="jobs.html" style="text-decoration: none; color: #475569;"><i class="fas fa-briefcase"></i> Browse Jobs</a>
+        <a href="my-bids.html" style="text-decoration: none; color: #1e5bbf; font-weight: 600;"><i class="fas fa-gavel"></i> My Bids</a>
+        <a href="messages.html" style="text-decoration: none; color: #475569;"><i class="fas fa-comments"></i> Messages</a>
+        <a href="profile.html" style="text-decoration: none; color: #475569;"><i class="fas fa-user"></i> Profile</a>
+        <button id="logoutBtn" style="background: #dc2626; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 50px; cursor: pointer;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1><i class="fas fa-gavel"></i> My Bids</h1>
+      <a href="jobs.html" class="btn-primary" style="width: auto; padding: 0.75rem 1.5rem;">
+        <i class="fas fa-search"></i> Find More Jobs
+      </a>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-cards" id="statsCards">
+      <!-- Will be populated dynamically -->
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All Bids</button>
+      <button class="filter-tab" data-filter="pending">Pending</button>
+      <button class="filter-tab" data-filter="accepted">Accepted</button>
+      <button class="filter-tab" data-filter="rejected">Rejected</button>
+      <button class="filter-tab" data-filter="withdrawn">Withdrawn</button>
+    </div>
+
+    <!-- Bids List -->
+    <div id="bidsList" class="bids-list">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i> Loading your bids...
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Bid Modal -->
+  <div id="editBidModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-edit"></i> Edit Bid</h3>
+        <button class="modal-close" onclick="window.closeEditModal()">&times;</button>
+      </div>
+      <form id="editBidForm">
+        <input type="hidden" id="editBidId">
+        <input type="hidden" id="editJobId">
+        <div class="form-group">
+          <label>Bid Amount ($)</label>
+          <input type="number" id="editBidAmount" required min="1">
+        </div>
+        <div class="form-group">
+          <label>Cover Letter</label>
+          <textarea id="editCoverLetter" rows="5" required placeholder="Explain why you're the best fit for this job..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary">
+          <i class="fas fa-save"></i> Update Bid
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './js/firebase-config.js';
+    import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { 
+      collection, 
+      query, 
+      where, 
+      getDocs,
+      orderBy,
+      doc,
+      getDoc,
+      updateDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+    let currentUser = null;
+    let allBids = [];
+    let currentFilter = 'all';
+    
+    const bidsList = document.getElementById('bidsList');
+    const statsCards = document.getElementById('statsCards');
+
+    // Check authentication
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        await loadBids();
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    async function loadBids() {
+      try {
+        // Query bids for current user
+        const bidsRef = collection(db, "bids");
+        const q = query(
+          bidsRef, 
+          where("freelancerId", "==", currentUser.uid),
+          orderBy("createdAt", "desc")
+        );
+        
+        const snapshot = await getDocs(q);
+        
+        allBids = [];
+        const jobPromises = [];
+        
+        // FIXED: Use documentSnapshot instead of doc to avoid naming conflict
+        snapshot.forEach((documentSnapshot) => {
+          const bidData = documentSnapshot.data();
+          const bid = {
+            id: documentSnapshot.id,
+            ...bidData
+          };
+          allBids.push(bid);
+          
+          // Fetch job details for each bid
+          if (bid.jobId) {
+            jobPromises.push(
+              getDoc(doc(db, "jobs", bid.jobId)).then(jobSnap => {
+                if (jobSnap.exists()) {
+                  bid.jobDetails = {
+                    id: jobSnap.id,
+                    ...jobSnap.data()
+                  };
+                  
+                  // Fetch client details
+                  if (bid.jobDetails.clientId) {
+                    return getDoc(doc(db, "users", bid.jobDetails.clientId)).then(clientSnap => {
+                      if (clientSnap.exists()) {
+                        bid.clientName = clientSnap.data().name || 'Anonymous';
+                      } else {
+                        bid.clientName = 'Anonymous';
+                      }
+                    });
+                  }
+                } else {
+                  bid.jobDetails = { title: 'Job Deleted' };
+                }
+              }).catch(err => {
+                console.log("Error fetching job:", err);
+                bid.jobDetails = { title: 'Error Loading Job' };
+              })
+            );
+          } else {
+            bid.jobDetails = { title: 'No Job Associated' };
+            bid.clientName = 'Unknown';
+          }
+        });
+        
+        await Promise.all(jobPromises);
+        
+        // Update stats
+        updateStats();
+        
+        // Display bids
+        filterBids(currentFilter);
+        
+      } catch (error) {
+        console.error("Error loading bids:", error);
+        bidsList.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error Loading Bids</h3>
+            <p>${error.message}</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+              If this is an index error, please create the required index in Firebase Console.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    function updateStats() {
+      const total = allBids.length;
+      const pending = allBids.filter(b => b.status === 'pending' || !b.status).length;
+      const accepted = allBids.filter(b => b.status === 'accepted').length;
+      const rejected = allBids.filter(b => b.status === 'rejected').length;
+      const withdrawn = allBids.filter(b => b.status === 'withdrawn').length;
+      
+      statsCards.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-number">${total}</div>
+          <div class="stat-label">Total Bids</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${pending}</div>
+          <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${accepted}</div>
+          <div class="stat-label">Accepted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${rejected + withdrawn}</div>
+          <div class="stat-label">Closed</div>
+        </div>
+      `;
+    }
+
+    function filterBids(filter) {
+      currentFilter = filter;
+      
+      let filteredBids = allBids;
+      
+      if (filter !== 'all') {
+        filteredBids = allBids.filter(bid => {
+          const status = bid.status || 'pending';
+          return status === filter;
+        });
+      }
+      
+      displayBids(filteredBids);
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp) return 'Recently';
+      try {
+        if (timestamp.toDate) {
+          return timestamp.toDate().toLocaleDateString();
+        }
+        return new Date(timestamp).toLocaleDateString();
+      } catch {
+        return 'Recently';
+      }
+    }
+
+    function displayBids(bids) {
+      if (bids.length === 0) {
+        bidsList.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-gavel"></i>
+            <h3>No Bids Found</h3>
+            <p>${currentFilter === 'all' ? "You haven't placed any bids yet." : `No ${currentFilter} bids found.`}</p>
+            <a href="jobs.html" class="btn-primary" style="display: inline-block; text-decoration: none; margin-top: 1rem; width: auto;">
+              Browse Jobs
+            </a>
+          </div>
+        `;
+        return;
+      }
+      
+      bidsList.innerHTML = bids.map(bid => {
+        const job = bid.jobDetails || {};
+        const status = bid.status || 'pending';
+        const statusClass = `status-${status}`;
+        
+        // Safely escape cover letter for onclick
+        const escapedCoverLetter = (bid.coverLetter || '').replace(/'/g, "\\'").replace(/\n/g, "\\n");
+        
+        return `
+          <div class="bid-card" onclick="window.location.href='job-details.html?id=${bid.jobId}'">
+            <div class="bid-header">
+              <div class="job-title-section">
+                <div class="job-title">${job.title || 'Job Title Not Available'}</div>
+                <div class="job-client">
+                  <i class="fas fa-user"></i> ${bid.clientName || 'Anonymous'}
+                </div>
+              </div>
+              <div class="bid-amount">$${bid.amount || 0}</div>
+            </div>
+            
+            <div class="job-meta">
+              <span class="job-badge">
+                <i class="fas fa-map-marker-alt"></i> ${job.location || 'Remote'}
+              </span>
+              <span class="job-badge">
+                <i class="fas fa-dollar-sign"></i> Budget: $${job.budget || 'N/A'}
+              </span>
+              <span class="bid-status ${statusClass}">
+                <i class="fas fa-circle"></i> ${status}
+              </span>
+            </div>
+            
+            <div class="bid-details">
+              <div class="cover-letter">
+                <strong><i class="fas fa-file-alt"></i> Your Cover Letter:</strong><br>
+                ${bid.coverLetter || 'No cover letter provided'}
+              </div>
+            </div>
+            
+            <div class="bid-footer">
+              <div class="bid-date">
+                <i class="fas fa-calendar"></i> 
+                Bid placed: ${formatDate(bid.createdAt)}
+              </div>
+              <div class="bid-actions" onclick="event.stopPropagation()">
+                ${status === 'pending' ? `
+                  <button class="btn-small btn-outline" onclick="window.openEditModal('${bid.id}', ${bid.amount}, '${escapedCoverLetter}', '${bid.jobId}')">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button class="btn-small btn-danger" onclick="window.withdrawBid('${bid.id}')">
+                    <i class="fas fa-times"></i> Withdraw
+                  </button>
+                ` : ''}
+                <button class="btn-small btn-outline" onclick="window.location.href='job-details.html?id=${bid.jobId}'">
+                  <i class="fas fa-eye"></i> View Job
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Filter tab functionality
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        filterBids(tab.dataset.filter);
+      });
+    });
+
+    // Modal functions
+    window.openEditModal = function(bidId, amount, coverLetter, jobId) {
+      document.getElementById('editBidId').value = bidId;
+      document.getElementById('editJobId').value = jobId;
+      document.getElementById('editBidAmount').value = amount;
+      document.getElementById('editCoverLetter').value = coverLetter.replace(/\\n/g, '\n');
+      document.getElementById('editBidModal').classList.add('active');
+    };
+
+    window.closeEditModal = function() {
+      document.getElementById('editBidModal').classList.remove('active');
+    };
+
+    window.withdrawBid = async function(bidId) {
+      if (!confirm('Are you sure you want to withdraw this bid?')) return;
+      
+      try {
+        await updateDoc(doc(db, "bids", bidId), {
+          status: 'withdrawn',
+          updatedAt: serverTimestamp()
+        });
+        
+        alert('Bid withdrawn successfully!');
+        location.reload();
+      } catch (error) {
+        alert('Error withdrawing bid: ' + error.message);
+      }
+    };
+
+    // Edit bid form submission
+    document.getElementById('editBidForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const bidId = document.getElementById('editBidId').value;
+      const amount = parseFloat(document.getElementById('editBidAmount').value);
+      const coverLetter = document.getElementById('editCoverLetter').value.trim();
+      
+      if (!coverLetter) {
+        alert('Please provide a cover letter');
+        return;
+      }
+      
+      try {
+        await updateDoc(doc(db, "bids", bidId), {
+          amount: amount,
+          coverLetter: coverLetter,
+          updatedAt: serverTimestamp()
+        });
+        
+        window.closeEditModal();
+        alert('Bid updated successfully!');
+        location.reload();
+      } catch (error) {
+        alert('Error updating bid: ' + error.message);
+      }
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('editBidModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('editBidModal')) {
+        window.closeEditModal();
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      if (confirm('Are you sure you want to log out?')) {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.href = 'index.html';
+        } catch (error) {
+          console.error("Logout error:", error);
+          alert('Error logging out. Please try again.');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

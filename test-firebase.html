@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Firebase Rules</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f0f9ff; }
+        .card { background: white; border-radius: 20px; padding: 20px; margin: 20px 0; }
+        .success { color: #059669; background: #d1fae5; padding: 10px; border-radius: 10px; }
+        .error { color: #dc2626; background: #fee2e2; padding: 10px; border-radius: 10px; }
+        button { background: #1e5bbf; color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; margin: 5px; }
+        pre { background: #1e1e2e; color: #fff; padding: 10px; border-radius: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🔒 Testing Firebase Security Rules</h1>
+        
+        <div>
+            <h3>Step 1: Sign In First</h3>
+            <input type="email" id="email" placeholder="Email" style="padding: 8px; margin: 5px;">
+            <input type="password" id="password" placeholder="Password" style="padding: 8px; margin: 5px;">
+            <button onclick="signIn()">Sign In</button>
+            <button onclick="signUp()">Sign Up (test account)</button>
+        </div>
+        
+        <div id="authStatus" class="info" style="margin: 10px 0; padding: 10px; background: #dbeafe; border-radius: 10px;">
+            Not signed in
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <h3>Step 2: Test Database Operations</h3>
+            <button onclick="testReadUsers()">Read Users</button>
+            <button onclick="testWriteJob()">Create Test Job</button>
+            <button onclick="testReadJobs()">Read Jobs</button>
+            <button onclick="testWriteMessage()">Send Test Message</button>
+        </div>
+        
+        <div id="result">
+            <pre>Results will appear here...</pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        
+        // 🔥 REPLACE WITH YOUR FIREBASE CONFIG
+        const firebaseConfig = {
+        apiKey: "AIzaSyAG7TNsPl0eVYimAZTSmUJGDMtRmVQOFTY",
+        authDomain: "skillbridge-26105.firebaseapp.com",
+        projectId: "skillbridge-26105",
+        storageBucket: "skillbridge-26105.firebasestorage.app",
+        messagingSenderId: "688380771987",
+        appId: "1:688380771987:web:805ea3cd2617db5db41766",
+        measurementId: "G-BL8TV2CP3V"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        const resultDiv = document.getElementById('result');
+        const authStatus = document.getElementById('authStatus');
+        
+        // Monitor auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                authStatus.innerHTML = `✅ Signed in as: ${user.email}<br>UID: ${user.uid}`;
+                authStatus.style.background = '#d1fae5';
+            } else {
+                authStatus.innerHTML = '❌ Not signed in. Please sign in to test write operations.';
+                authStatus.style.background = '#fee2e2';
+            }
+        });
+        
+        window.signUp = async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+            
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Create user document
+                await setDoc(doc(db, "users", userCredential.user.uid), {
+                    name: email.split('@')[0],
+                    email: email,
+                    role: "freelancer",
+                    createdAt: new Date().toISOString()
+                });
+                resultDiv.innerHTML = `<pre class="success">✅ User created and signed in!\nUID: ${userCredential.user.uid}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<pre class="error">❌ Error: ${error.message}</pre>`;
+            }
+        };
+        
+        window.signIn = async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                resultDiv.innerHTML = `<pre class="success">✅ Signed in successfully!</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<pre class="error">❌ Error: ${error.message}</pre>`;
+            }
+        };
+        
+        window.testReadUsers = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                let output = "📁 USERS COLLECTION:\n\n";
+                querySnapshot.forEach((doc) => {
+                    output += `📄 ${doc.id}: ${JSON.stringify(doc.data(), null, 2)}\n`;
+                    output += "─".repeat(50) + "\n";
+                });
+                if (querySnapshot.empty) output += "No users found.\n";
+                resultDiv.innerHTML = `<pre>${output}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<pre class="error">❌ Read failed: ${error.message}</pre>`;
+            }
+        };
+        
+        window.testReadJobs = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "jobs"));
+                let output = "💼 JOBS COLLECTION:\n\n";
+                querySnapshot.forEach((doc) => {
+                    output += `📄 ${doc.id}: ${JSON.stringify(doc.data(), null, 2)}\n`;
+                    output += "─".repeat(50) + "\n";
+                });
+                if (querySnapshot.empty) output += "No jobs found.\n";
+                resultDiv.innerHTML = `<pre>${output}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<pre class="error">❌ Read failed: ${error.message}</pre>`;
+            }
+        };
+        
+        window.testWriteJob = async () => {
+            if (!auth.currentUser) {
+                resultDiv.innerHTML = `<pre class="error">❌ You must be signed in to create a job!</pre>`;
+                return;
+            }
+            
+            try {
+                const docRef = await addDoc(collection(db, "jobs"), {
+                    title: "Test Job - " + new Date().toLocaleTimeString(),
+                    description: "This is a test job to verify security rules",
+                    budget: 500,
+                    clientId: auth.currentUser.uid,
+                    location: "Remote",
+                    status: "open",
+                    createdAt: new Date().toISOString()
+                });
+                resultDiv.innerHTML = `<pre class="success">✅ Job created successfully!\nDocument ID: ${docRef.id}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<pre class="error">❌ Write failed: ${error.message}</pre>`;
+            }
+        };
+        
+        window.testWriteMessage = async () => {
+            if (!auth.currentUser) {
+                resultDiv.innerHTML = `<pre class="error">❌ You must be signed in to send a message!</pre>`;
+                return;
+            }
+            
+            try {
+                const docRef = await addDoc(collection(db, "messages"), {
+                    senderId: auth.currentUser.uid,
+                    receiverId: "test-user",
+                    text: "Test message at " + new Date().toLocaleTimeString(),
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
+                resultDiv.innerHTML = `<pre class="success">✅ Message sent successfully!\nDocument ID: ${docRef.id}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<pre class="error">❌ Send failed: ${error.message}</pre>`;
+            }
+        };
+    </script>
+</body>
+</html>

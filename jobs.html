@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Jobs - SkillBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .profile-quick-info {
+      background: linear-gradient(135deg, #1e5bbf, #3b82f6);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 24px;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .profile-stats {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .profile-stat {
+      text-align: center;
+    }
+    
+    .profile-stat .number {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .filter-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 24px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .job-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .job-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.5rem;
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .job-card:hover {
+      border-color: #1e5bbf;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+    }
+    
+    .job-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+    
+    .job-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    
+    .job-budget {
+      font-weight: 700;
+      color: #1e5bbf;
+    }
+    
+    .job-description {
+      color: #475569;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    
+    .job-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .job-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    
+    .badge-location {
+      background: #fef3c7;
+      color: #d97706;
+    }
+    
+    .badge-status {
+      background: #d1fae5;
+      color: #059669;
+    }
+    
+    .job-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    
+    .client-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    
+    .no-jobs {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      background: white;
+      border-radius: 24px;
+      color: #64748b;
+    }
+    
+    .loading-spinner {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      color: #1e5bbf;
+    }
+
+    .btn-primary {
+      background: #1e5bbf;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #1e5bbf;
+      border: 2px solid #1e5bbf;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding: 1rem 2rem; background: white; border-radius: 60px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+      <a href="index.html" class="logo" style="font-size: 1.8rem; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, #0a4275, #2c7be5); -webkit-background-clip: text; background-clip: text; color: transparent;">
+        <i class="fas fa-bridge"></i> SkillBridge
+      </a>
+      <div class="nav-links" style="display: flex; gap: 2rem; align-items: center;">
+        <a href="dashboard.html" style="text-decoration: none; color: #475569;"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="jobs.html" style="text-decoration: none; color: #1e5bbf; font-weight: 600;">Jobs</a>
+        <a href="my-bids.html" style="text-decoration: none; color: #475569;">My Bids</a>
+        <a href="messages.html" style="text-decoration: none; color: #475569;">Messages</a>
+        <a href="profile.html" style="text-decoration: none; color: #475569;">Profile</a>
+        <button id="logoutBtn" style="background: #dc2626; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 50px; cursor: pointer;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <!-- User Profile Quick Info -->
+    <div id="profileQuickInfo" class="profile-quick-info" style="display: none;">
+      <!-- Will be populated dynamically -->
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-section">
+      <h3 style="margin-bottom: 1rem;"><i class="fas fa-filter"></i> Filter Jobs</h3>
+      <div class="filter-grid">
+        <input type="text" id="searchInput" placeholder="Search jobs..." style="padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 12px;">
+        <select id="locationFilter" style="padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 12px;">
+          <option value="">All Locations</option>
+          <option value="Remote">Remote</option>
+          <option value="Hybrid">Hybrid</option>
+          <option value="On-site">On-site</option>
+        </select>
+        <select id="budgetFilter" style="padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 12px;">
+          <option value="">Any Budget</option>
+          <option value="0-500">Under $500</option>
+          <option value="500-2000">$500 - $2,000</option>
+          <option value="2000-5000">$2,000 - $5,000</option>
+          <option value="5000+">$5,000+</option>
+        </select>
+        <button id="clearFilters" class="btn-secondary">
+          <i class="fas fa-times"></i> Clear Filters
+        </button>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2><i class="fas fa-briefcase"></i> Available Opportunities</h2>
+      <span id="jobCount" style="color: #64748b;"></span>
+    </div>
+
+    <div id="jobsList" class="job-grid">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i> Loading jobs...
+      </div>
+    </div>
+
+    <footer style="margin-top: 3rem; text-align: center; color: #64748b;">
+      <p>&copy; 2025 SkillBridge</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './js/firebase-config.js';
+    import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { 
+      collection, 
+      getDocs, 
+      query, 
+      orderBy,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    
+    let currentUser = null;
+    let userProfile = null;
+    let allJobs = [];
+    
+    const jobsList = document.getElementById('jobsList');
+    const profileQuickInfo = document.getElementById('profileQuickInfo');
+    
+    // Check auth state
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        await loadUserProfile(user.uid);
+      } else {
+        currentUser = null;
+        userProfile = null;
+        profileQuickInfo.style.display = 'none';
+      }
+      await loadJobs();
+    });
+    
+    async function loadUserProfile(userId) {
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+          userProfile = userSnap.data();
+          localStorage.setItem('userRole', userProfile.role || 'freelancer');
+          displayProfileInfo();
+        }
+      } catch (error) {
+        console.error("Error loading profile:", error);
+      }
+    }
+    
+    function displayProfileInfo() {
+      if (!userProfile) return;
+      
+      profileQuickInfo.style.display = 'flex';
+      
+      if (userProfile.role === 'freelancer') {
+        profileQuickInfo.innerHTML = `
+          <div>
+            <h3 style="margin-bottom: 0.25rem;">
+              <i class="fas fa-user-circle"></i> ${userProfile.name || 'Freelancer'}
+            </h3>
+            <p style="opacity: 0.9;">
+              <i class="fas fa-tag"></i> ${userProfile.role || 'freelancer'} • 
+              <i class="fas fa-dollar-sign"></i> $${userProfile.rate || 0}/hr
+            </p>
+            ${userProfile.skills ? `<p style="margin-top: 0.5rem;"><i class="fas fa-code"></i> ${userProfile.skills}</p>` : ''}
+          </div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="number">${userProfile.completedJobs || 0}</div>
+              <div>Jobs Done</div>
+            </div>
+            <div class="profile-stat">
+              <div class="number">${userProfile.rating || '—'}</div>
+              <div>Rating</div>
+            </div>
+          </div>
+        `;
+      } else {
+        profileQuickInfo.innerHTML = `
+          <div>
+            <h3 style="margin-bottom: 0.25rem;">
+              <i class="fas fa-building"></i> ${userProfile.name || 'Client'}
+            </h3>
+            <p style="opacity: 0.9;">
+              <i class="fas fa-tag"></i> ${userProfile.role || 'client'}
+            </p>
+          </div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="number">${userProfile.jobsPosted || 0}</div>
+              <div>Jobs Posted</div>
+            </div>
+            <div class="profile-stat">
+              <div class="number">$${userProfile.totalSpent || 0}</div>
+              <div>Total Spent</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    async function loadJobs() {
+      try {
+        const jobsRef = collection(db, "jobs");
+        // Removed where clause to avoid index error, filter client-side instead
+        const q = query(jobsRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        
+        allJobs = [];
+        const clientPromises = [];
+        
+        // FIXED: Use forEach with a different variable name to avoid conflict
+        snapshot.forEach((documentSnapshot) => {
+          const jobData = documentSnapshot.data();
+          const job = {
+            id: documentSnapshot.id,
+            ...jobData
+          };
+          
+          // Only show open jobs (client-side filter)
+          if (job.status === 'open') {
+            allJobs.push(job);
+            
+            // Fetch client info
+            if (job.clientId) {
+              clientPromises.push(
+                getDoc(doc(db, "users", job.clientId)).then(clientSnap => {
+                  if (clientSnap.exists()) {
+                    job.clientName = clientSnap.data().name || 'Anonymous';
+                  }
+                }).catch(() => {
+                  job.clientName = 'Anonymous';
+                })
+              );
+            } else {
+              job.clientName = 'Anonymous';
+            }
+          }
+        });
+        
+        await Promise.all(clientPromises);
+        
+        displayJobs(allJobs);
+        document.getElementById('jobCount').textContent = `${allJobs.length} jobs found`;
+        
+      } catch (error) {
+        console.error("Error loading jobs:", error);
+        jobsList.innerHTML = `
+          <div class="no-jobs">
+            <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i>
+            <h3>Error Loading Jobs</h3>
+            <p>${error.message}</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+              If this is an index error, please create the required index in Firebase Console.
+            </p>
+          </div>
+        `;
+      }
+    }
+    
+    function displayJobs(jobs) {
+      if (jobs.length === 0) {
+        jobsList.innerHTML = `
+          <div class="no-jobs">
+            <i class="fas fa-briefcase" style="font-size: 3rem; color: #1e5bbf; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <h3>No Jobs Available</h3>
+            <p>Check back later or post a job if you're a client!</p>
+            ${userProfile?.role === 'client' ? 
+              '<a href="post-job.html" class="btn-primary" style="display: inline-block; margin-top: 1rem;">Post a Job</a>' : ''}
+          </div>
+        `;
+        return;
+      }
+      
+      jobsList.innerHTML = jobs.map(job => `
+        <div class="job-card" onclick="window.location.href='job-details.html?id=${job.id}'">
+          <div class="job-card-header">
+            <span class="job-title">${job.title || 'Untitled Job'}</span>
+            <span class="job-budget">$${job.budget || 0}</span>
+          </div>
+          <p class="job-description">${(job.description || 'No description').substring(0, 150)}...</p>
+          <div class="job-meta">
+            <span class="job-badge badge-location">
+              <i class="fas fa-map-marker-alt"></i> ${job.location || 'Remote'}
+            </span>
+            <span class="job-badge badge-status">
+              <i class="fas fa-circle"></i> ${job.status || 'open'}
+            </span>
+          </div>
+          <div class="job-footer">
+            <div class="client-info">
+              <i class="fas fa-user"></i>
+              <span>${job.clientName || 'Anonymous'}</span>
+            </div>
+            <div class="client-info">
+              <i class="fas fa-calendar"></i>
+              <span>${formatDate(job.createdAt)}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function formatDate(timestamp) {
+      if (!timestamp) return 'Recently';
+      try {
+        if (timestamp.toDate) {
+          return timestamp.toDate().toLocaleDateString();
+        }
+        return new Date(timestamp).toLocaleDateString();
+      } catch {
+        return 'Recently';
+      }
+    }
+    
+    // Filter functionality
+    function filterJobs() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      const location = document.getElementById('locationFilter').value;
+      const budgetRange = document.getElementById('budgetFilter').value;
+      
+      const filtered = allJobs.filter(job => {
+        // Search filter
+        if (searchTerm) {
+          const titleMatch = job.title?.toLowerCase().includes(searchTerm);
+          const descMatch = job.description?.toLowerCase().includes(searchTerm);
+          if (!titleMatch && !descMatch) {
+            return false;
+          }
+        }
+        
+        // Location filter
+        if (location && job.location !== location) {
+          return false;
+        }
+        
+        // Budget filter
+        if (budgetRange) {
+          const budget = job.budget || 0;
+          switch (budgetRange) {
+            case '0-500':
+              if (budget > 500) return false;
+              break;
+            case '500-2000':
+              if (budget < 500 || budget > 2000) return false;
+              break;
+            case '2000-5000':
+              if (budget < 2000 || budget > 5000) return false;
+              break;
+            case '5000+':
+              if (budget < 5000) return false;
+              break;
+          }
+        }
+        
+        return true;
+      });
+      
+      displayJobs(filtered);
+      document.getElementById('jobCount').textContent = `${filtered.length} jobs found`;
+    }
+    
+    // Event listeners for filters
+    document.getElementById('searchInput').addEventListener('input', filterJobs);
+    document.getElementById('locationFilter').addEventListener('change', filterJobs);
+    document.getElementById('budgetFilter').addEventListener('change', filterJobs);
+    
+    document.getElementById('clearFilters').addEventListener('click', () => {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('locationFilter').value = '';
+      document.getElementById('budgetFilter').value = '';
+      displayJobs(allJobs);
+      document.getElementById('jobCount').textContent = `${allJobs.length} jobs found`;
+    });
+    
+    // Logout functionality
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+      if (confirm('Are you sure you want to log out?')) {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.href = 'index.html';
+        } catch (error) {
+          console.error("Logout error:", error);
+          alert('Error logging out. Please try again.');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

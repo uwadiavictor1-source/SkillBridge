@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>SkillBridge | Marketplace for Freelancers & Clients</title>
+  <!-- Google Fonts: Darker Grotesque -->
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free icons, no emojis) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Darker Grotesque', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f0f9ff 0%, #e6f0fa 100%);
+      color: #0a2b3e;
+      scroll-behavior: smooth;
+    }
+
+    /* fluid container & animations */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* subtle animations */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(18px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade {
+      animation: fadeUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+
+    /* buttons & links cursor pointer */
+    button, a, .clickable, .card-link, .btn {
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    /* card styles with border-radius & blue shades */
+    .card {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 8px 20px rgba(0, 30, 60, 0.05);
+      padding: 1.8rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px -12px rgba(0, 90, 150, 0.2);
+    }
+
+    /* shades of blue */
+    .bg-primary-blue {
+      background: #1e4b8f;
+    }
+    .bg-soft-blue {
+      background: #d9eaff;
+    }
+    .text-accent {
+      color: #1e5bbf;
+    }
+    .btn-primary {
+      background: #1e5bbf;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: -0.2px;
+      transition: 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .btn-primary:hover {
+      background: #0f418f;
+      transform: scale(1.02);
+      box-shadow: 0 12px 20px -12px #1e5bbf80;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #1e5bbf;
+      color: #1e5bbf;
+      border-radius: 40px;
+      padding: 10px 24px;
+      font-weight: 600;
+    }
+    .btn-outline:hover {
+      background: #1e5bbf10;
+      transform: translateY(-2px);
+    }
+
+    /* header nav */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0a4275, #2c7be5);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #1f3b4c;
+    }
+    .nav-links a:hover {
+      color: #1e5bbf;
+    }
+
+    /* hero */
+    .hero {
+      padding: 60px 0 40px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3.8rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(120deg, #0b2b44, #2266cc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* grid layout for jobs / cards */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 30px;
+      margin: 40px 0;
+    }
+
+    /* form containers */
+    .form-container {
+      max-width: 560px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 36px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 14px 18px;
+      margin: 12px 0;
+      border-radius: 28px;
+      border: 1px solid #cbdde9;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #1e5bbf;
+      box-shadow: 0 0 0 3px #1e5bbf20;
+    }
+
+    .role-selector {
+      display: flex;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    /* footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      color: #2c5a7a;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; }
+      .hero h1 { font-size: 2.5rem; }
+      .container { padding: 0 20px; }
+      .grid-3 { gap: 20px; }
+    }
+
+    .badge {
+      background: #eef4ff;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1e5bbf;
+    }
+    i.icon-mr {
+      margin-right: 8px;
+    }
+    .hidden-page {
+      display: none;
+    }
+    .active-page {
+      display: block;
+    }
+    .message-bubble {
+      background: #eef2fc;
+      padding: 10px 16px;
+      border-radius: 24px;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- dynamic navbar (will be updated via js) -->
+  <nav class="navbar">
+    <div class="logo"><i class="fas fa-paw"></i> SkillBridge</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#" data-page="home">Home</a>
+      <a href="#" data-page="jobs">Browse Jobs</a>
+      <a href="#" data-page="dashboard">Dashboard</a>
+      <a href="#" data-page="profile">Profile</a>
+      <a href="#" data-page="messages">Messages</a>
+      <a href="#" id="logoutBtn" style="color:#c7362b;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a href="#" id="loginNavBtn" style="display:none;">Login</a>
+      <a href="#" id="signupNavBtn" style="display:none;">Signup</a>
+    </div>
+  </nav>
+
+  <!-- ==================== ALL PAGES (SPA style) ==================== -->
+  <!-- LANDING / HOME -->
+  <div id="homePage" class="page active-page animate-fade">
+    <div class="hero">
+      <h1>Connect, Collaborate & <span class="text-accent">Grow</span></h1>
+      <p style="font-size:1.4rem; max-width:700px; margin:20px auto;">Find top freelancers or post your next project — all in one fluid platform.</p>
+      <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-top:32px;">
+        <button class="btn-primary" id="heroGetStarted"><i class="fas fa-rocket icon-mr"></i> Get Started</button>
+        <button class="btn-outline" id="heroBrowseJobs"><i class="fas fa-search icon-mr"></i> Browse Jobs</button>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="card"><i class="fas fa-briefcase" style="font-size:2.2rem; color:#1e5bbf;"></i><h3>For Clients</h3><p>Post jobs, receive bids, hire with confidence.</p></div>
+      <div class="card"><i class="fas fa-laptop-code" style="font-size:2.2rem; color:#1e5bbf;"></i><h3>For Freelancers</h3><p>Showcase skills, bid on projects, earn reviews.</p></div>
+      <div class="card"><i class="fas fa-comments" style="font-size:2.2rem; color:#1e5bbf;"></i><h3>Secure Messaging</h3><p>Real-time chat & collaboration tools.</p></div>
+    </div>
+  </div>
+
+  <!-- LOGIN PAGE -->
+  <div id="loginPage" class="page hidden-page">
+    <div class="form-container animate-fade">
+      <h2><i class="fas fa-key"></i> Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email address">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button class="btn-primary" id="doLoginBtn" style="width:100%;"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</button>
+      <p style="margin-top:20px; text-align:center;">No account? <a href="#" id="switchToSignup" style="color:#1e5bbf;">Create one</a></p>
+    </div>
+  </div>
+
+  <!-- SIGNUP PAGE -->
+  <div id="signupPage" class="page hidden-page">
+    <div class="form-container animate-fade">
+      <h2><i class="fas fa-user-plus"></i> Signup</h2>
+      <input type="text" id="signupName" placeholder="Full name">
+      <input type="email" id="signupEmail" placeholder="Email">
+      <input type="password" id="signupPassword" placeholder="Password">
+      <div class="role-selector">
+        <label><input type="radio" name="role" value="client"> Client (Hire)</label>
+        <label><input type="radio" name="role" value="freelancer"> Freelancer (Work)</label>
+      </div>
+      <button class="btn-primary" id="doSignupBtn" style="width:100%;"><i class="fas fa-check-circle"></i> Register</button>
+      <p style="margin-top:20px; text-align:center;">Already have an account? <a href="#" id="switchToLogin" style="color:#1e5bbf;">Login</a></p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD (role-based) -->
+  <div id="dashboardPage" class="page hidden-page">
+    <div class="animate-fade">
+      <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+      <div id="dashboardRolePanel" class="card" style="margin-top:20px;">
+        <!-- dynamic client/freelancer view -->
+        <div id="clientDashboardView" style="display:none;">
+          <h3>Client Controls</h3>
+          <button class="btn-primary" id="goToPostJobBtn"><i class="fas fa-plus-circle"></i> Post New Job</button>
+          <button class="btn-outline" id="goToMyJobsBtn"><i class="fas fa-list"></i> My Jobs & Bids</button>
+        </div>
+        <div id="freelancerDashboardView" style="display:none;">
+          <h3>Freelancer Hub</h3>
+          <button class="btn-primary" id="goBrowseJobsDash"><i class="fas fa-search"></i> Browse Available Jobs</button>
+          <button class="btn-outline" id="goToProfileDash"><i class="fas fa-id-card"></i> Update Profile</button>
+        </div>
+        <div id="noRoleMessage">Loading user info...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE PAGE -->
+  <div id="profilePage" class="page hidden-page">
+    <div class="form-container animate-fade">
+      <h2><i class="fas fa-user-edit"></i> My Profile</h2>
+      <input type="text" id="profileName" placeholder="Full name">
+      <input type="text" id="profileSkills" placeholder="Skills (e.g., React, Design)">
+      <input type="text" id="profileLocation" placeholder="Location">
+      <input type="number" id="profileRate" placeholder="Hourly rate (USD)">
+      <button class="btn-primary" id="saveProfileBtn">Save Profile <i class="fas fa-save"></i></button>
+    </div>
+  </div>
+
+  <!-- BROWSE JOBS PAGE -->
+  <div id="jobsPage" class="page hidden-page">
+    <div class="animate-fade">
+      <h2><i class="fas fa-briefcase"></i> Available Jobs</h2>
+      <div class="grid-3" id="jobsListContainer">Loading jobs...</div>
+    </div>
+  </div>
+
+  <!-- POST JOB PAGE (client) -->
+  <div id="postJobPage" class="page hidden-page">
+    <div class="form-container animate-fade">
+      <h2><i class="fas fa-upload"></i> Post a New Job</h2>
+      <input type="text" id="jobTitle" placeholder="Job title">
+      <textarea id="jobDesc" rows="3" placeholder="Detailed description"></textarea>
+      <input type="number" id="jobBudget" placeholder="Budget ($)">
+      <input type="text" id="jobLocation" placeholder="Location / Remote">
+      <button class="btn-primary" id="publishJobBtn">Publish Job <i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- MY JOBS & BIDS (client view) -->
+  <div id="myJobsPage" class="page hidden-page">
+    <div class="animate-fade">
+      <h2><i class="fas fa-clipboard-list"></i> My Posted Jobs & Bids</h2>
+      <div id="myJobsList"></div>
+    </div>
+  </div>
+
+  <!-- MESSAGES (real-time simulation with local state) -->
+  <div id="messagesPage" class="page hidden-page">
+    <div class="card">
+      <h2><i class="fas fa-comment-dots"></i> Messages</h2>
+      <div id="chatMessages" style="max-height: 400px; overflow-y: auto; background:#f8fafc; border-radius: 28px; padding: 16px;"></div>
+      <div style="display:flex; gap:12px; margin-top:20px;">
+        <input type="text" id="messageInput" placeholder="Type a message...">
+        <button class="btn-primary" id="sendMsgBtn">Send <i class="fas fa-paper-plane"></i></button>
+      </div>
+      <p class="badge" style="margin-top:12px;">Demo: messaging between users (simulated in-memory)</p>
+    </div>
+  </div>
+
+  <!-- BID MODAL SIMULATION (inline) - but we can show bid form inside job details using dynamic div -->
+</div>
+
+<footer>
+  <i class="far fa-copyright"></i> SkillBridge — Seamless Freelance Ecosystem | Blue & White Harmony
+</footer>
+
+<!-- firebase will be connected via instructions later, but we build the whole mock + logic ready to plug -->
+<script type="module">
+  // ------------------------------
+  // MOCK DATA & STATE (bridge to Firebase)
+  // We'll build entire UI interactivity and then show how to replace with Firebase.
+  // This simulates authentication, firestore collections (users, jobs, bids, messages)
+  // For demonstration: local storage mock user session
+  // ------------------------------
+  
+  let currentUser = null;  // { uid, email, role, name }
+  let mockUsers = JSON.parse(localStorage.getItem('mockUsers')) || [];
+  let mockJobs = JSON.parse(localStorage.getItem('mockJobs')) || [];
+  let mockBids = JSON.parse(localStorage.getItem('mockBids')) || [];
+  let mockMessages = JSON.parse(localStorage.getItem('mockMessages')) || [];
+
+  // Helper to save to localStorage
+  function persistData() {
+    localStorage.setItem('mockUsers', JSON.stringify(mockUsers));
+    localStorage.setItem('mockJobs', JSON.stringify(mockJobs));
+    localStorage.setItem('mockBids', JSON.stringify(mockBids));
+    localStorage.setItem('mockMessages', JSON.stringify(mockMessages));
+  }
+
+  // Initialize demo jobs
+  if (mockJobs.length === 0) {
+    mockJobs.push({ id: "job1", title: "Build React Dashboard", description: "Modern dashboard with charts", budget: 850, clientId: "demoClient", location: "Remote", createdAt: Date.now() });
+    mockJobs.push({ id: "job2", title: "Logo & Brand Identity", description: "Creative logo set", budget: 300, clientId: "demoClient2", location: "NYC", createdAt: Date.now() });
+    persistData();
+  }
+
+  // Page routing
+  const pages = {
+    home: 'homePage', login: 'loginPage', signup: 'signupPage', dashboard: 'dashboardPage',
+    profile: 'profilePage', jobs: 'jobsPage', postJob: 'postJobPage', myJobs: 'myJobsPage',
+    messages: 'messagesPage'
+  };
+  
+  function showPage(pageId) {
+    Object.values(pages).forEach(p => document.getElementById(p).classList.add('hidden-page'));
+    document.getElementById(pageId).classList.remove('hidden-page');
+    if (pageId === 'dashboardPage') refreshDashboard();
+    if (pageId === 'jobsPage') renderJobsList();
+    if (pageId === 'myJobsPage') renderMyJobs();
+    if (pageId === 'profilePage' && currentUser) loadProfileData();
+    if (pageId === 'messagesPage') renderMessages();
+  }
+
+  function updateNavByAuth() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginNav = document.getElementById('loginNavBtn');
+    const signupNav = document.getElementById('signupNavBtn');
+    if (currentUser) {
+      logoutBtn.style.display = 'inline-block';
+      loginNav.style.display = 'none';
+      signupNav.style.display = 'none';
+    } else {
+      logoutBtn.style.display = 'none';
+      loginNav.style.display = 'inline-block';
+      signupNav.style.display = 'inline-block';
+    }
+  }
+
+  // Authentication mocks (ready for firebase)
+  function doSignup(email, password, name, role) {
+    let existing = mockUsers.find(u => u.email === email);
+    if (existing) { alert("User already exists"); return false; }
+    const newUser = { uid: Date.now().toString(), email, name, role, password, skills: '', location: '', rate: 0 };
+    mockUsers.push(newUser);
+    persistData();
+    currentUser = { ...newUser };
+    delete currentUser.password;
+    localStorage.setItem('sessionUser', JSON.stringify(currentUser));
+    alert("Signup successful! Welcome " + name);
+    showPage('dashboardPage');
+    updateNavByAuth();
+    refreshDashboard();
+    return true;
+  }
+
+  function doLogin(email, password) {
+    const user = mockUsers.find(u => u.email === email && u.password === password);
+    if (!user) { alert("Invalid credentials"); return false; }
+    currentUser = { uid: user.uid, email: user.email, name: user.name, role: user.role, skills: user.skills, location: user.location, rate: user.rate };
+    localStorage.setItem('sessionUser', JSON.stringify(currentUser));
+    showPage('dashboardPage');
+    updateNavByAuth();
+    refreshDashboard();
+    return true;
+  }
+
+  function logout() {
+    currentUser = null;
+    localStorage.removeItem('sessionUser');
+    updateNavByAuth();
+    showPage('homePage');
+  }
+
+  function refreshDashboard() {
+    if (!currentUser) return;
+    const clientDiv = document.getElementById('clientDashboardView');
+    const freelancerDiv = document.getElementById('freelancerDashboardView');
+    const noRoleMsg = document.getElementById('noRoleMessage');
+    if (currentUser.role === 'client') {
+      clientDiv.style.display = 'block';
+      freelancerDiv.style.display = 'none';
+      noRoleMsg.style.display = 'none';
+    } else if (currentUser.role === 'freelancer') {
+      clientDiv.style.display = 'none';
+      freelancerDiv.style.display = 'block';
+      noRoleMsg.style.display = 'none';
+    } else {
+      clientDiv.style.display = 'none';
+      freelancerDiv.style.display = 'none';
+      noRoleMsg.style.display = 'block';
+    }
+  }
+
+  function renderJobsList() {
+    const container = document.getElementById('jobsListContainer');
+    if (!container) return;
+    if (mockJobs.length === 0) { container.innerHTML = "<div class='card'>No jobs posted yet.</div>"; return; }
+    container.innerHTML = mockJobs.map(job => `
+      <div class="card">
+        <h3><i class="fas fa-tasks"></i> ${job.title}</h3>
+        <p>${job.description.substring(0,80)}</p>
+        <p><strong>💰 $${job.budget}</strong> | 📍 ${job.location}</p>
+        ${currentUser && currentUser.role === 'freelancer' ? `<button class="btn-outline bidNowBtn" data-jobid="${job.id}" style="margin-top:12px;"><i class="fas fa-gavel"></i> Submit Bid</button>` : ''}
+        ${!currentUser ? '<p class="badge">Login to bid</p>' : ''}
+      </div>
+    `).join('');
+    // attach bid events
+    document.querySelectorAll('.bidNowBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const jobId = btn.getAttribute('data-jobid');
+        const amount = prompt("Enter your bid amount (USD):");
+        if (amount && currentUser) {
+          mockBids.push({ id: Date.now().toString(), jobId, freelancerId: currentUser.uid, amount: parseInt(amount), message: "Bid placed", createdAt: Date.now() });
+          persistData();
+          alert("Bid submitted successfully!");
+          renderJobsList();
+        }
+      });
+    });
+  }
+
+  function renderMyJobs() {
+    if (!currentUser || currentUser.role !== 'client') { document.getElementById('myJobsList').innerHTML = "<p>Only clients can view jobs.</p>"; return; }
+    const myJobs = mockJobs.filter(j => j.clientId === currentUser.uid);
+    if (myJobs.length === 0) { document.getElementById('myJobsList').innerHTML = "<div class='card'>You haven't posted any jobs.</div>"; return; }
+    let html = '';
+    myJobs.forEach(job => {
+      const bidsForJob = mockBids.filter(b => b.jobId === job.id);
+      html += `<div class="card" style="margin-bottom:20px;"><h3>${job.title}</h3><p>${job.description}</p><p>Budget: $${job.budget}</p><h4>Bids (${bidsForJob.length})</h4>`;
+      if (bidsForJob.length) {
+        bidsForJob.forEach(bid => {
+          const freelancer = mockUsers.find(u => u.uid === bid.freelancerId);
+          html += `<div class="message-bubble"><strong>${freelancer?.name || 'Freelancer'}</strong> bid $${bid.amount} <i class="fas fa-comment"></i> "${bid.message}"</div>`;
+        });
+      } else html += "<p>No bids yet.</p>";
+      html += `</div>`;
+    });
+    document.getElementById('myJobsList').innerHTML = html;
+  }
+
+  function loadProfileData() {
+    if (!currentUser) return;
+    document.getElementById('profileName').value = currentUser.name || '';
+    document.getElementById('profileSkills').value = currentUser.skills || '';
+    document.getElementById('profileLocation').value = currentUser.location || '';
+    document.getElementById('profileRate').value = currentUser.rate || '';
+  }
+
+  function saveProfile() {
+    if (!currentUser) return;
+    const userIndex = mockUsers.findIndex(u => u.uid === currentUser.uid);
+    if (userIndex !== -1) {
+      mockUsers[userIndex].name = document.getElementById('profileName').value;
+      mockUsers[userIndex].skills = document.getElementById('profileSkills').value;
+      mockUsers[userIndex].location = document.getElementById('profileLocation').value;
+      mockUsers[userIndex].rate = parseInt(document.getElementById('profileRate').value) || 0;
+      persistData();
+      currentUser = { ...mockUsers[userIndex], password: undefined };
+      localStorage.setItem('sessionUser', JSON.stringify(currentUser));
+      alert("Profile updated!");
+    }
+  }
+
+  function postNewJob() {
+    if (!currentUser || currentUser.role !== 'client') { alert("Only clients can post jobs"); return; }
+    const title = document.getElementById('jobTitle').value;
+    const desc = document.getElementById('jobDesc').value;
+    const budget = parseInt(document.getElementById('jobBudget').value);
+    const location = document.getElementById('jobLocation').value;
+    if (!title || !desc) { alert("Please fill required fields"); return; }
+    const newJob = { id: Date.now().toString(), title, description: desc, budget, clientId: currentUser.uid, location, createdAt: Date.now() };
+    mockJobs.push(newJob);
+    persistData();
+    alert("Job posted!");
+    showPage('dashboardPage');
+    document.getElementById('jobTitle').value = '';
+    document.getElementById('jobDesc').value = '';
+  }
+
+  function renderMessages() {
+    const chatDiv = document.getElementById('chatMessages');
+    if (!chatDiv) return;
+    const relevantMsgs = mockMessages.filter(m => (m.senderId === currentUser?.uid && m.receiverId === 'global') || (m.receiverId === currentUser?.uid));
+    chatDiv.innerHTML = relevantMsgs.map(m => `<div class="message-bubble"><strong>${m.senderName || 'User'}:</strong> ${m.text} <small>${new Date(m.timestamp).toLocaleTimeString()}</small></div>`).join('');
+    if (relevantMsgs.length === 0) chatDiv.innerHTML = "<p>No messages yet. Send a hello!</p>";
+  }
+  function sendMessage() {
+    if (!currentUser) { alert("Login first"); return; }
+    const msgText = document.getElementById('messageInput').value.trim();
+    if (!msgText) return;
+    mockMessages.push({ id: Date.now(), senderId: currentUser.uid, senderName: currentUser.name, receiverId: 'global', text: msgText, timestamp: Date.now() });
+    persistData();
+    renderMessages();
+    document.getElementById('messageInput').value = '';
+  }
+
+  // event listeners + restore session
+  window.addEventListener('DOMContentLoaded', () => {
+    const stored = localStorage.getItem('sessionUser');
+    if (stored) { currentUser = JSON.parse(stored); updateNavByAuth(); if (currentUser) showPage('dashboardPage'); else showPage('homePage'); }
+    else showPage('homePage');
+    
+    // nav links
+    document.querySelectorAll('[data-page]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const page = link.getAttribute('data-page'); 
+        if (pages[page]) showPage(pages[page]);
+        if (page === 'jobs') renderJobsList();
+        if (page === 'messages') renderMessages();
+      });
+    });
+    document.getElementById('logoutBtn')?.addEventListener('click', () => logout());
+    document.getElementById('loginNavBtn')?.addEventListener('click', () => showPage('loginPage'));
+    document.getElementById('signupNavBtn')?.addEventListener('click', () => showPage('signupPage'));
+    document.getElementById('heroGetStarted')?.addEventListener('click', () => currentUser ? showPage('dashboardPage') : showPage('signupPage'));
+    document.getElementById('heroBrowseJobs')?.addEventListener('click', () => { renderJobsList(); showPage('jobsPage'); });
+    document.getElementById('doLoginBtn')?.addEventListener('click', () => { const email = document.getElementById('loginEmail').value; const pwd = document.getElementById('loginPassword').value; doLogin(email, pwd); });
+    document.getElementById('doSignupBtn')?.addEventListener('click', () => { const name = document.getElementById('signupName').value; const email = document.getElementById('signupEmail').value; const pwd = document.getElementById('signupPassword').value; const roleRadio = document.querySelector('input[name="role"]:checked'); if (!roleRadio) { alert("Select role"); return; } doSignup(email, pwd, name, roleRadio.value); });
+    document.getElementById('switchToLogin')?.addEventListener('click', (e) => { e.preventDefault(); showPage('loginPage'); });
+    document.getElementById('switchToSignup')?.addEventListener('click', (e) => { e.preventDefault(); showPage('signupPage'); });
+    document.getElementById('goToPostJobBtn')?.addEventListener('click', () => showPage('postJobPage'));
+    document.getElementById('goToMyJobsBtn')?.addEventListener('click', () => { renderMyJobs(); showPage('myJobsPage'); });
+    document.getElementById('goBrowseJobsDash')?.addEventListener('click', () => { renderJobsList(); showPage('jobsPage'); });
+    document.getElementById('goToProfileDash')?.addEventListener('click', () => { loadProfileData(); showPage('profilePage'); });
+    document.getElementById('saveProfileBtn')?.addEventListener('click', () => saveProfile());
+    document.getElementById('publishJobBtn')?.addEventListener('click', () => postNewJob());
+    document.getElementById('sendMsgBtn')?.addEventListener('click', () => sendMessage());
+  });
+</script>
+
+<!-- ==================== FIREBASE INTEGRATION GUIDE ==================== -->
+<!-- 
+  🔥 HOW TO CONNECT THIS PROJECT TO FIREBASE (Step-by-Step):
+
+  1. CREATE FIREBASE PROJECT
+     - Go to console.firebase.google.com → Add project → enable Analytics (optional)
+  2. ENABLE SERVICES:
+     - Authentication → Email/Password (enable)
+     - Firestore Database → create in test mode (start in test mode)
+     - Storage (optional for images)
+  3. REGISTER WEB APP:
+     - Project settings → add web app → copy firebaseConfig object.
+  4. REPLACE MOCK DATA WITH FIREBASE:
+     - In the <script type="module">, import Firebase SDK:
+         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "...firebase-auth.js";
+         import { getFirestore, collection, addDoc, getDocs, query, where, setDoc, doc, updateDoc, onSnapshot } from "...firebase-firestore.js";
+     - Initialize with your config.
+  5. REPLACE mockUsers with Firestore 'users' collection:
+        - After signup, save user data to Firestore: setDoc(doc(db, "users", user.uid), { name, email, role, skills, location, rate })
+        - On login, fetch user role from Firestore.
+  6. REPLACE jobs, bids, messages collections:
+        - Use addDoc(collection(db, "jobs"), jobData) / getDocs for fetching.
+        - Real-time messaging: onSnapshot(collection(db, "messages"), (snap) => { renderMessages(snap) }).
+  7. SECURITY RULES (basic example):
+        rules_version = '2';
+        service cloud.firestore {
+          match /databases/{database}/documents {
+            match /{document=**} { allow read, write: if request.auth != null; }
+          }
+        }
+  8. ADAPT CURRENT MOCK FUNCTIONS:
+        - doSignup -> createUserWithEmailAndPassword + add user doc.
+        - doLogin -> signInWithEmailAndPassword + fetch role from firestore.
+        - renderJobsList -> getDocs from jobs collection.
+        - postNewJob -> addDoc to jobs.
+        - bids -> addDoc to bids, etc.
+  
+  The current frontend is fully interactive and ready to swap mock data with Firebase calls!
+  Keep all UI logic intact; just replace the persistent storage methods with Firebase SDK.
+  After integrating, the project becomes a full-stack real-time marketplace.
+-->
+</body>
+</html>
