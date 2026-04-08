@@ -5,7 +5,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAG7TNsPl0eVYimAZTSmUJGDMtRmVQOFTY",
+  apiKey: "YOUR_API_KEY",
   authDomain: "skillbridge-26105.firebaseapp.com",
   projectId: "skillbridge-26105",
   storageBucket: "skillbridge-26105.firebasestorage.app",
